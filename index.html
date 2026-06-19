@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ultimate Class Awards!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Game Container */
+        .game-container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+            box-shadow: 0 20px 0px rgba(0, 0, 0, 0.15), 0 30px 50px rgba(0,0,0,0.3);
+            border: 8px solid #333;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            width: 100%;
+            background-color: #eee;
+            border-radius: 20px;
+            border: 3px solid #333;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #FF416C, #FF4B2B);
+            width: 10%;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Banner & Titles */
+        .banner {
+            background-color: #FF1493;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 3px solid #333;
+            box-shadow: 3px 3px 0 #333;
+            margin-bottom: 20px;
+        }
+
+        .question-card {
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        .role-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 0px #ccff00, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            line-height: 1.2;
+        }
+
+        .description {
+            font-size: 1.4rem;
+            color: #555;
+            margin-bottom: 35px;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+
+        /* Emoji Styling */
+        .emoji {
+            font-size: 5rem;
+            display: block;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        /* Action Button Area */
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Navigation Button */
+        .btn-next {
+            font-family: 'Fredoka One', cursive;
+            background-color: #00E676;
+            color: #333;
+            border: 4px solid #333;
+            padding: 15px 40px;
+            font-size: 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #00aa50;
+            transition: all 0.1s ease;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .btn-next:hover {
+            background-color: #26ff8a;
+        }
+
+        .btn-next:active {
+            box-shadow: 0 2px 0 #00aa50;
+            transform: translateY(6px);
+        }
+
+        /* Animations */
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="progress-wrapper" id="progressWrapper">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="question-card active" id="q1">
+            <div class="banner">Award #1</div>
+            <span class="emoji">⏰</span>
+            <h1 class="role-title">Mr. / Ms. Late</h1>
+            <p class="description">"The bell is just a friendly suggestion." Who enters class late with Starbucks every day?</p>
+        </div>
+
+        <div class="question-card" id="q2">
+            <div class="banner">Award #2</div>
+            <span class="emoji">🚽</span>
+            <h1 class="role-title">The Toilet Traveler</h1>
+            <p class="description">Who asks to go to the bathroom for 20 minutes just to wander the hallways?</p>
+        </div>
+
+        <div class="question-card" id="q3">
+            <div class="banner">Award #3</div>
+            <span class="emoji">🫰</span>
+            <h1 class="role-title">The K-Pop Stan</h1>
+            <p class="description">Who is most likely to skip studying to watch BTS music videos or practice choreography?</p>
+        </div>
+
+        <div class="question-card" id="q4">
+            <div class="banner">Award #4</div>
+            <span class="emoji">🧠</span>
+            <h1 class="role-title">The Mega Brain</h1>
+            <p class="description">Who corrects the teacher politely and reminds everyone about the homework due today?</p>
+        </div>
+
+        <div class="question-card" id="q5">
+            <div class="banner">Award #5</div>
+            <span class="emoji">😇</span>
+            <h1 class="role-title">Aggressively Polite</h1>
+            <p class="description">Who says "Thank you" to the automated vending machine and apologizes to the desk they bumped into?</p>
+        </div>
+
+        <div class="question-card" id="q6">
+            <div class="banner">Award #6</div>
+            <span class="emoji">😴</span>
+            <h1 class="role-title">The Sleep Master</h1>
+            <p class="description">Who can sleep through a loud fire drill, sitting perfectly upright, with their eyes wide open?</p>
+        </div>
+
+        <div class="question-card" id="q7">
+            <div class="banner">Award #7</div>
+            <span class="emoji">🍿</span>
+            <h1 class="role-title">The Drama Detector</h1>
+            <p class="description">"Wait, who said what?!" Who knows absolutely all the gossip before it even happens?</p>
+        </div>
+
+        <div class="question-card" id="q8">
+            <div class="banner">Award #8</div>
+            <span class="emoji">🤡</span>
+            <h1 class="role-title">The Class Clown</h1>
+            <p class="description">Who turns every serious lesson into a comedy show and makes even the teacher laugh?</p>
+        </div>
+
+        <div class="question-card" id="q9">
+            <div class="banner">Award #9</div>
+            <span class="emoji">🎨</span>
+            <h1 class="role-title">The Picasso of Doodles</h1>
+            <p class="description">Whose notebook has 1% actual school notes and 99% elaborate, beautiful masterpiece doodles?</p>
+        </div>
+
+        <div class="question-card" id="q10">
+            <div class="banner">Award #10</div>
+            <span class="emoji">🧃</span>
+            <h1 class="role-title">The Snack Dealer</h1>
+            <p class="description">Whose backpack is basically a mini-grocery store full of chips, candy, and juice boxes?</p>
+        </div>
+
+        <div class="question-card" id="endScreen">
+            <div class="banner" style="background-color: #00E676;">Game Over!</div>
+            <span class="emoji">🎉🥳🙌</span>
+            <h1 class="role-title">The People Have Spoken!</h1>
+            <p class="description">Give a round of applause to all our legendary winners! 🏆</p>
+        </div>
+
+        <div class="button-container">
+            <button class="btn-next" id="nextBtn" onclick="nextQuestion()">Next Category ➔</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalQuestions = 10;
+
+        function nextQuestion() {
+            document.getElementById(`q${currentStep}`).classList.remove('active');
+            currentStep++;
+
+            const progressPercent = (currentStep / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = `${Math.min(progressPercent, 100)}%`;
+
+            if (currentStep <= totalQuestions) {
+                document.getElementById(`q${currentStep}`).classList.add('active');
+            } else {
+                document.getElementById('endScreen').classList.add('active');
+                document.getElementById('progressWrapper').style.display = 'none';
+                
+                const btn = document.getElementById('nextBtn');
+                btn.innerHTML = "Play Again 🔄";
+                btn.style.backgroundColor = "#FF1493";
+                btn.style.boxShadow = "0 8px 0 #b30059";
+                btn.onclick = resetGame;
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('endScreen').classList.remove('active');
+            currentStep = 1;
+            
+            document.getElementById('q1').classList.add('active');
+            document.getElementById('progressWrapper').style.display = 'block';
+            document.getElementById('progressBar').style.width = '10%';
+            
+            const btn = document.getElementById('nextBtn');
+            btn.innerHTML = "Next Category ➔";
+            btn.style.backgroundColor = "#00E676";
+            btn.style.boxShadow = "0 8px 0 #00aa50";
+            btn.onclick = nextQuestion;
+        }
+    </script>
+</body>
+</html>
