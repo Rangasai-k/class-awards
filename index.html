@@ -149,6 +149,9 @@
 </head>
 <body>
 
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
     <div class="game-container">
         <div class="progress-wrapper" id="progressWrapper">
             <div class="progress-bar" id="progressBar"></div>
@@ -240,7 +243,17 @@
         let currentStep = 1;
         const totalQuestions = 10;
 
+        // Sound Player Helper
+        function playSound(audioId) {
+            const sound = document.getElementById(audioId);
+            sound.currentTime = 0; // Rewind to start if clicked rapidly
+            sound.play().catch(e => console.log("Audio play blocked until user interacts with the page."));
+        }
+
         function nextQuestion() {
+            // Play the interface click sound
+            playSound('clickSound');
+
             document.getElementById(`q${currentStep}`).classList.remove('active');
             currentStep++;
 
@@ -253,6 +266,9 @@
                 document.getElementById('endScreen').classList.add('active');
                 document.getElementById('progressWrapper').style.display = 'none';
                 
+                // Play the funny celebration win sound!
+                setTimeout(() => { playSound('winSound'); }, 300);
+
                 const btn = document.getElementById('nextBtn');
                 btn.innerHTML = "Play Again 🔄";
                 btn.style.backgroundColor = "#FF1493";
@@ -262,6 +278,7 @@
         }
 
         function resetGame() {
+            playSound('clickSound');
             document.getElementById('endScreen').classList.remove('active');
             currentStep = 1;
             
