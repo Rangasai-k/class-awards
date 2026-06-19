@@ -149,9 +149,6 @@
 </head>
 <body>
 
-    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
-    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
-
     <div class="game-container">
         <div class="progress-wrapper" id="progressWrapper">
             <div class="progress-bar" id="progressBar"></div>
@@ -243,16 +240,55 @@
         let currentStep = 1;
         const totalQuestions = 10;
 
-        // Sound Player Helper
-        function playSound(audioId) {
-            const sound = document.getElementById(audioId);
-            sound.currentTime = 0; // Rewind to start if clicked rapidly
-            sound.play().catch(e => console.log("Audio play blocked until user interacts with the page."));
+        // Web Audio API Synth setup - requires no files, generates sound instantly in browser
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playClickSound() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
+            
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function playWinSound() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            // Retro Arcade Fanfare Sound Effect
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C chords
+            notes.forEach((freq, index) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.1));
+                
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime + (index * 0.1));
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (index * 0.1) + 0.4);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + (index * 0.1));
+                osc.stop(audioCtx.currentTime + (index * 0.1) + 0.4);
+            });
         }
 
         function nextQuestion() {
-            // Play the interface click sound
-            playSound('clickSound');
+            playClickSound();
 
             document.getElementById(`q${currentStep}`).classList.remove('active');
             currentStep++;
@@ -266,8 +302,8 @@
                 document.getElementById('endScreen').classList.add('active');
                 document.getElementById('progressWrapper').style.display = 'none';
                 
-                // Play the funny celebration win sound!
-                setTimeout(() => { playSound('winSound'); }, 300);
+                // Play the retro celebration fanfare!
+                setTimeout(() => { playWinSound(); }, 200);
 
                 const btn = document.getElementById('nextBtn');
                 btn.innerHTML = "Play Again 🔄";
@@ -278,7 +314,7 @@
         }
 
         function resetGame() {
-            playSound('clickSound');
+            playClickSound();
             document.getElementById('endScreen').classList.remove('active');
             currentStep = 1;
             
